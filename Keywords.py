@@ -14,13 +14,13 @@ class Tokenizer:
         return text.split()
     def __lemmatize_keyword(self,keyword):
         return self.lemmatizer.lemmatize(keyword,  pos='v')
-    def do(self,text : str):
+    def do(self,url : str ,text : str):
         clean_text = self.__cleanstr(text)
         text_tokens =self.__tokenize(clean_text)
 
 
         return [self.__lemmatize_keyword(keyword) for keyword in text_tokens]
-    def do2(self,text : str):
+    def do2(self,url : str ,text : str):
         dic = {}
         clean_text = self.__cleanstr(text)
         text_tokens =self.__tokenize(clean_text)

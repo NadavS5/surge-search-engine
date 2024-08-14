@@ -6,6 +6,7 @@ import requests
 from urllib.parse import urlparse
 from html.parser import HTMLParser
 from Keywords import Tokenizer
+from database import Database
 
 sqliteConnection = sqlite3.connect('database.db')
 cursor = sqliteConnection.cursor()
@@ -16,7 +17,7 @@ root = "google.com"
 url_queue = queue.Queue()
 url_done = set() 
 
-
+db = Database()
 tokenizer = Tokenizer()
 
 
@@ -122,10 +123,13 @@ with open("urls.txt", "a") as f:
             #enter url and title to database
 
             
-
+            keywords_array = tokenizer.do( parser.title , + parser.description)
+            keywords_dict = tokenizer.do2( parser.title , + parser.description)
             #convert array to string with join()
-            keywords = " ".join(tokenizer.do( parser.title +" " + parser.description))
+            keywords = " ".join(keywords_array)
             print(keywords)
+
+            db.addWebsite(url.strip(), title.strip(), keywords_dict)
 
             cursor.execute('''INSERT INTO websites (url,title,keywords) VALUES (?,?,?)''', (url.strip(),parser.title.strip(), keywords))
             sqliteConnection.commit()
