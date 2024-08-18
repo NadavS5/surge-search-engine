@@ -3,6 +3,8 @@ import queue
 import threading
 import sqlite3
 import requests
+import traceback
+
 from urllib.parse import urlparse
 from html.parser import HTMLParser
 from Keywords import Tokenizer
@@ -135,8 +137,9 @@ with open("urls.txt", "a") as f:
            # sqliteConnection.commit()
             #print(url.strip(),parser.title.strip())
         except Exception as e:
-           print("error" )
-           print (e)
+            print("error" )
+          # print (e)
+            print(traceback.print_exc())
         except KeyboardInterrupt :
             print("done")
             break

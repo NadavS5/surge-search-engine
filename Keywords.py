@@ -1,5 +1,7 @@
 from nltk.stem import WordNetLemmatizer
 import nltk, re
+from urllib.parse import urlparse
+
 class Tokenizer:
     def __init__(self):
         #nltk.download('wordnet')
@@ -13,22 +15,32 @@ class Tokenizer:
     def __tokenize(self,text : str):
         return text.split()
     def __lemmatize_keyword(self,keyword):
-        return self.lemmatizer.lemmatize(keyword,  pos='v')
+        first = self.lemmatizer.lemmatize(keyword,  pos='v')
+        return self.lemmatizer.lemmatize(first,  pos='n')
     def do(self,url : str ,text : str):
         clean_text = self.__cleanstr(text)
         text_tokens =self.__tokenize(clean_text)
 
 
         return [self.__lemmatize_keyword(keyword) for keyword in text_tokens]
-    def do2(self,url : str ,text : str):
+    def do2(self,title : str ,text : str):
         dic = {}
+
+
+        url_splitted = self.__cleanstr(title).split(" ")
+        #url_splitted = url.split(".")
+
+        #url_splitted.pop() # remove the com / net ...
+
+        #print(url_splitted)
+
         clean_text = self.__cleanstr(text)
         text_tokens =self.__tokenize(clean_text)
 
-        lemmetized_tokens = [self.__lemmatize_keyword(keyword) for keyword in text_tokens]
+        lemmetized_tokens = [self.__lemmatize_keyword(keyword) for keyword in text_tokens + url_splitted ]
 
         for token in lemmetized_tokens:
-            if(token in dic. keys()):
+            if(token in dic.keys()):
                 dic[token] +=1
             else:
                 dic[token] =1
@@ -36,7 +48,7 @@ class Tokenizer:
 
 if(__name__ == "__main__"):
     tokenz = Tokenizer()
-    print(tokenz.do("running cats dogs where is my food at"))
+    #print(tokenz.do2("google.com","running cats dogs where is my food at smarter ads smart"))
     prompt = input("enter a prompt: ")
-    print(tokenz.do(prompt))
-    print(tokenz.do2(prompt))
+    #print(tokenz.do("google.com",prompt))
+    print(tokenz.do2("google.com",prompt))

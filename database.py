@@ -1,5 +1,7 @@
 import sqlite3
 from Keywords import Tokenizer
+import numpy as np
+
 class Database:
     def __init__(self):
         self.__sqliteConnection = sqlite3.connect('database.db')
@@ -37,6 +39,39 @@ class Database:
             )
         self.__sqliteConnection.commit()
 
+    # main search function
+    def search(self,keywords: dict[str,str] ):
+
+        results = {}
+
+        for keyword, times in keywords.items():
+            self.cursor.execute(f'''
+
+                SELECT d.url, d.title, kwm.tf
+                FROM keyword_website_map kwm
+                JOIN keywords k ON kwm.keyword_id = k.id
+                JOIN websites d ON kwm.website_id = d.id
+                WHERE k.keyword = '{keyword}'
+                ORDER BY kwm.tf DESC;
+                ''')
+            result = self.cursor.fetchall()
+
+            for url ,title , tf in result:
+                if(url in results.keys()):
+                    results[url] +=tf
+                else:
+                    results[url] =tf
+        vals =  list(results.values())
+        sorted_vals = np.argsort(vals)[::-1]
+
+
+            #print(list(results.values()))
+            
+        keys = list(results.keys())
+        sorted_results = {keys[i] : vals[i] for i in sorted_vals}
+        print(sorted_results)
+            #result.
+            #print(result)
 
 
 
@@ -46,9 +81,11 @@ if __name__ == '__main__':
     #db.addWebsite("google.com","google",{'google':3})
     
     tk = Tokenizer()
-
-
-    db.addWebsite('google.com', 'Google', tk.do2('google.com' , 'google search engine'))
+    #db.search({'google':1})
+    #db.addWebsite('marclou.com', 'Marc lou', tk.do2('marc lou' , 'solopreneurs read Just Ship It'))
+    db.search(tk.do2("", input("enter your search: ")))
+    #db.addWebsite('google.com', 'Google', tk.do2('google ' , 'google search engine'))
+    
     #db.addWebsite('google.com', 'Google', tk.do2('google.com' , 'google search engine'))
     #db.addWebsite('google.com', 'Google', tk.do2('google.com' , 'google search engine'))
     #db.addWebsite('google.com', 'Google', tk.do2('google.com' , 'google google google search engine'))
