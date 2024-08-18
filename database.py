@@ -26,12 +26,12 @@ class Database:
 
             result = self.cursor.fetchall()[0]
             keyword_id = result[0]
-            document_frequency = result[1]
+            #document_frequency = result[1]
 
             self.cursor.execute('''UPDATE keywords SET count = count + 1 WHERE id = ?''',((keyword_id,)))
 
             
-            print(keyword , term_count , times , tf)
+            #print(keyword , term_count , times , tf)
             self.cursor.execute('''INSERT INTO keyword_website_map (keyword_id,website_id,tf) VALUES (?,?,?)''',
                 (keyword_id, website_id, tf)
             )

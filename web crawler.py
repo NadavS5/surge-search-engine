@@ -123,16 +123,16 @@ with open("urls.txt", "a") as f:
             #enter url and title to database
 
             
-            keywords_array = tokenizer.do( parser.title , + parser.description)
-            keywords_dict = tokenizer.do2( parser.title , + parser.description)
+            #keywords_array = tokenizer.do( parser.title , parser.description)
+            keywords_dict = tokenizer.do2( parser.title , parser.description)
             #convert array to string with join()
-            keywords = " ".join(keywords_array)
-            print(keywords)
+            #keywords = " ".join(keywords_array)
+            #print(keywords)
 
-            db.addWebsite(url.strip(), title.strip(), keywords_dict)
+            db.addWebsite(url.strip(), parser.title.strip(), keywords_dict)
 
-            cursor.execute('''INSERT INTO websites (url,title,keywords) VALUES (?,?,?)''', (url.strip(),parser.title.strip(), keywords))
-            sqliteConnection.commit()
+            #cursor.execute('''INSERT INTO websites (url,title,keywords) VALUES (?,?,?)''', (url.strip(),parser.title.strip(), keywords))
+           # sqliteConnection.commit()
             #print(url.strip(),parser.title.strip())
         except Exception as e:
            print("error" )
