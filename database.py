@@ -4,7 +4,7 @@ import numpy as np
 
 class Database:
     def __init__(self):
-        self.__sqliteConnection = sqlite3.connect('database.db')
+        self.__sqliteConnection = sqlite3.connect('database.db', check_same_thread=False)
         self.cursor = self.__sqliteConnection.cursor()
     def __del__(self):
         self.__sqliteConnection.close()
@@ -69,9 +69,8 @@ class Database:
             
         keys = list(results.keys())
         sorted_results = {keys[i] : vals[i] for i in sorted_vals}
-        print(sorted_results)
-            #result.
-            #print(result)
+        #print(sorted_results)
+        return sorted_results
 
 
 
