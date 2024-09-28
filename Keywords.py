@@ -1,5 +1,6 @@
-from nltk.stem import WordNetLemmatizer
 import nltk, re
+from nltk.stem import WordNetLemmatizer
+
 from urllib.parse import urlparse
 
 class Tokenizer:

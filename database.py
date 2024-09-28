@@ -1,14 +1,13 @@
 import sqlite3
 from Keywords import Tokenizer
 import numpy as np
-
 class Database:
     def __init__(self):
         self.__sqliteConnection = sqlite3.connect('database.db', check_same_thread=False)
         self.cursor = self.__sqliteConnection.cursor()
     def __del__(self):
         self.__sqliteConnection.close()
-    def addWebsite(self, url:str, title :str, keywords: dict[str,str] ):
+    def addWebsite(self, url:str, title :str, keywords ):
 
         ##tf##
         term_count = sum(keywords.values())
@@ -19,7 +18,8 @@ class Database:
         self.cursor.execute('''INSERT INTO websites (url,title) VALUES (?,?)''', (url.strip(),title.strip()))
         website_id = self.cursor.lastrowid
         for keyword, times in keywords.items():
-
+            if len(keyword) == 0:
+                continue
             tf =  times/term_count
 
             self.cursor.execute('''INSERT OR IGNORE INTO keywords (keyword,count) VALUES (?,?)''', ((keyword,0)))
@@ -40,7 +40,7 @@ class Database:
         self.__sqliteConnection.commit()
 
     # main search function
-    def search(self,keywords: dict[str,str] ):
+    def search(self,keywords ):
 
         results = {}
 
