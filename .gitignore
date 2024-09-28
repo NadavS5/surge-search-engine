@@ -2,3 +2,6 @@ database.sqbpro
 *.db-journal
 __pycache__/
 database.db
+webserver.py
+commands.txt
+static/script.js

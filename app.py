@@ -11,8 +11,11 @@ def index():
         return render_template('index.html')
     if request.method == 'POST':
         quary = request.form['prompt']
-        result = str(db.search(tk.do2(" ",quary)))
-        print(result)
-        return f"<p>{result}</p>"
+        result = db.search(tk.do2(" ",quary))
+
+        print("template rendered")
+
+        return render_template('results.html', results = result)
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)#, ssl_context=('/etc/ssl/certs/selfsigned.crt', '/etc/ssl/private/selfsigned.key'))
